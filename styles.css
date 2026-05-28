@@ -18,7 +18,7 @@
   --color-bg-card-hover: #FFF2E6;
   --color-surface: #FAF5EF;
   --color-text: #2C3E50;
-  --color-text-muted: #7F8C8D;
+  --color-text-muted: #5F6E7A;
   --color-border: rgba(44, 62, 80, 0.1);
 
   /* Typography */
@@ -63,6 +63,29 @@ a {
   color: var(--color-primary);
   text-decoration: none;
   transition: var(--transition);
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-link:focus {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  width: auto;
+  height: auto;
+  padding: 0.75rem 1rem;
+  background: rgba(44, 62, 80, 0.95);
+  color: #fff;
+  border-radius: 0.75rem;
+  text-decoration: none;
+  z-index: 2000;
 }
 
 a:hover { color: var(--color-primary-dark); }
@@ -328,9 +351,15 @@ body.nav-open {
 .hero-bg-overlay {
   position: absolute;
   inset: 0;
-  background:
+  background-image:
     linear-gradient(rgba(255, 248, 240, 0.85), rgba(245, 230, 208, 0.9)),
     url("assets/hero/brunch-spread.jpg");
+  background-image:
+    linear-gradient(rgba(255, 248, 240, 0.85), rgba(245, 230, 208, 0.9)),
+    image-set(
+      url("assets/hero/brunch-spread-1200.webp") type("image/webp"),
+      url("assets/hero/brunch-spread.jpg") type("image/jpeg")
+    );
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -458,11 +487,19 @@ body.nav-open {
   height: 40px;
   background: linear-gradient(to bottom, var(--color-primary), transparent);
   animation: scrollPulse 2s infinite;
+  transform-origin: top;
 }
 
 @keyframes scrollPulse {
-  0%, 100% { opacity: 1; height: 40px; }
-  50% { opacity: 0.3; height: 20px; }
+  0%, 100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
+  50% {
+    opacity: 0.3;
+    transform: scaleY(0.5);
+  }
 }
 
 /* ---------- About ---------- */

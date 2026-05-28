@@ -40,14 +40,20 @@
   <meta name="twitter:image" content="https://sunrisecafeatx.netlify.app/assets/menu_brunch/avocado-toast.jpg" />
 
   <!-- Performance -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  </noscript>
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="preload" href="styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="styles.css" />
+  </noscript>
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="preload" as="image" href="assets/hero/brunch-spread-1200.webp">
+  <link rel="preload" as="image" href="assets/interior/cafe-interior-warm-70.webp">
 
   <!-- Structured Data: Restaurant -->
   <script type="application/ld+json">
@@ -125,6 +131,7 @@
 </script>
 
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   <!-- ===================== NAVIGATION ===================== -->
   <nav class="navbar" id="navbar">
     <div class="nav-container">
@@ -145,6 +152,8 @@
       </button>
     </div>
   </nav>
+
+  <main id="main-content">
 
   <!-- ===================== HERO ===================== -->
   <section class="hero" id="hero">
@@ -200,7 +209,10 @@
         <div class="about-image-col animate-on-scroll">
           <div class="about-image-wrapper">
             <div class="about-image">
-              <img src="assets/interior/cafe-interior-warm.jpg" loading="lazy" alt="Warm, relaxing cafe interior">
+              <picture>
+                <source type="image/webp" srcset="assets/interior/cafe-interior-warm-70.webp">
+                <img src="assets/interior/cafe-interior-warm.jpg" width="596" height="795" alt="Warm, relaxing cafe interior">
+              </picture>
             </div>
             <div class="about-accent-box">
               <span class="accent-number">Est.</span>
@@ -415,37 +427,37 @@
       <div class="gallery-grid animate-on-scroll">
         <div class="gallery-item">
           <div class="gallery-placeholder" style="background: linear-gradient(135deg, #E8913A, #F4D03F);">
-            <img src="assets/menu_bakery/croissants.jpg" loading="lazy" alt="Fresh Croissants & Pastries" class="rounded-image">
+            <img src="assets/menu_bakery/croissants.jpg" width="800" height="533" loading="lazy" alt="Fresh Croissants & Pastries" class="rounded-image">
             <p>Fresh Croissants &amp; Pastries</p>
           </div>
         </div>
         <div class="gallery-item">
           <div class="gallery-placeholder" style="background: linear-gradient(135deg, #2C3E50, #5D6D7E);">
-            <img src="assets/menu_drinks/latte-art.jpg" loading="lazy" alt="Latte Art & Craft Coffee" class="rounded-image">
+            <img src="assets/menu_drinks/latte-art.jpg" width="800" height="534" loading="lazy" alt="Latte Art & Craft Coffee" class="rounded-image">
             <p>Latte Art &amp; Craft Coffee</p>
           </div>
         </div>
         <div class="gallery-item">
           <div class="gallery-placeholder" style="background: linear-gradient(135deg, #F4D03F, #E8913A);">
-            <img src="assets/menu_brunch/avocado-toast.jpg" loading="lazy" alt="Avocado Toast Plated" class="rounded-image">
+            <img src="assets/menu_brunch/avocado-toast.jpg" width="800" height="800" loading="lazy" alt="Avocado Toast Plated" class="rounded-image">
             <p>Avocado Toast Plated</p>
           </div>
         </div>
         <div class="gallery-item">
           <div class="gallery-placeholder" style="background: linear-gradient(135deg, #27AE60, #2ECC71);">
-            <img src="assets/gallery/fresh-produce-market.jpg" loading="lazy" alt="Local Farm Ingredients" class="rounded-image">
+            <img src="assets/gallery/fresh-produce-market.jpg" width="800" height="533" loading="lazy" alt="Local Farm Ingredients" class="rounded-image">
             <p>Local Farm Ingredients</p>
           </div>
         </div>
         <div class="gallery-item">
           <div class="gallery-placeholder" style="background: linear-gradient(135deg, #8E44AD, #BB8FCE);">
-            <img src="assets/menu_brunch/blueberry-pancakes.jpg" loading="lazy" alt="Blueberry Pancake Stack" class="rounded-image">
+            <img src="assets/menu_brunch/blueberry-pancakes.jpg" width="800" height="568" loading="lazy" alt="Blueberry Pancake Stack" class="rounded-image">
             <p>Blueberry Pancake Stack</p>
           </div>
         </div>
         <div class="gallery-item">
           <div class="gallery-placeholder" style="background: linear-gradient(135deg, #E74C3C, #F39C12);">
-            <img src="assets/interior/cafe-interior-rustic.jpg" loading="lazy" alt="Rustic Cafe Interior" class="rounded-image">
+            <img src="assets/interior/cafe-interior-rustic.jpg" width="800" height="534" loading="lazy" alt="Rustic Cafe Interior" class="rounded-image">
             <p>Rustic Cafe Interior</p>
           </div>
         </div>
@@ -628,6 +640,7 @@
   </section>
 
   <!-- ===================== FOOTER ===================== -->
+  </main>
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">

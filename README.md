@@ -14,24 +14,26 @@ A fully responsive and SEO-optimized restaurant website built with HTML, CSS, an
 
 ## ✨ Features
 
-- 📱 Fully responsive design (mobile, tablet, desktop)
-- 🍽️ Dynamic menu filtering system
-- 🎞️ Smooth animations and transitions
-- 💬 Testimonial slider
-- 🗺️ Embedded Google Maps integration
-- ⚡ Optimized for performance and SEO
-- 🎯 Clean and user-friendly interface
+- Fully responsive design (mobile, tablet, desktop)
+- Dynamic menu filtering system
+- Smooth animations and transitions
+- Testimonial slider
+- Embedded Google Maps integration
+- Optimized for performance and SEO with CSS preload and faster font delivery
+- WebP image delivery and explicit image dimensions for faster loading
+- Accessibility improvements like skip link and landmark structure
+- Clean and user-friendly interface
 
 ## 📦 Installation
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/andrewcoder58/sunrise-cafe-website.git
+git clone https://github.com/andrewcoder58/sunrise-cafe.git
 ```
 
 2. Navigate into the project folder:
 ```bash
-cd sunrise-cafe-website
+cd sunrise-cafe
 ```
 
 3. Open the project:
@@ -45,7 +47,6 @@ sunrise-cafe/
 │── index.html
 │── styles.css
 │── script.js
-│── images/
 │── assets/
 │   ├── gallery/
 │   ├── hero/
@@ -63,7 +64,7 @@ You can easily customize the project:
 - Update menu items in `index.html`
 - Modify styles in `styles.css`
 - Edit interactivity in `script.js`
-- Replace images in the `images/` and `assets/` folders
+- Replace images in the `assets/` folders
 - Update favicon in the `favicon/` directory
 
 ## 🤝 Contributing
@@ -84,14 +85,6 @@ git commit -m "Add your feature"
 git push origin feature/YourFeature
 ```
 5. Open a Pull Request  
-
-## 🧪 Future Improvements
-
-- Add backend for reservations
-- Integrate online ordering system
-- Improve accessibility (ARIA support)
-- Add dark mode toggle
-- Add AI-assisted customer support
 
 ## 📄 License
 
