@@ -351,15 +351,9 @@ body.nav-open {
 .hero-bg-overlay {
   position: absolute;
   inset: 0;
-  background-image:
+  background:
     linear-gradient(rgba(255, 248, 240, 0.85), rgba(245, 230, 208, 0.9)),
     url("assets/hero/brunch-spread.jpg");
-  background-image:
-    linear-gradient(rgba(255, 248, 240, 0.85), rgba(245, 230, 208, 0.9)),
-    image-set(
-      url("assets/hero/brunch-spread-1200.webp") type("image/webp"),
-      url("assets/hero/brunch-spread.jpg") type("image/jpeg")
-    );
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

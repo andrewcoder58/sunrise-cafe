@@ -89,4 +89,4 @@ git push origin feature/YourFeature
 ## 📄 License
 
 This project is licensed under the MIT License.  
-See the [LICENSE](https://github.com/andrewcoder58/sunrise-cafe-website/blob/main/LICENSE) file for details.
+See the [LICENSE](https://github.com/andrewcoder58/sunrise-cafe/blob/main/LICENSE) file for details.
