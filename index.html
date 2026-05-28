@@ -140,7 +140,7 @@
         <li><a href="#hours-location">Visit</a></li>
       </ul>
       <a href="#menu" class="nav-cta">Order Online</a>
-      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <button type="button" class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-controls="navLinks" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -540,7 +540,7 @@
                 Austin, TX 78704<br />
                 <em>South Lamar Neighborhood</em>
               </p>
-              <a href="https://www.google.com/maps/dir/?api=1&destination=2847+S+Lamar+Blvd+Austin+TX" target="_blank" class="btn btn-secondary btn-small"> Get Directions</a>
+              <a href="https://www.google.com/maps/dir/?api=1&destination=2847+S+Lamar+Blvd+Austin+TX" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-small"> Get Directions</a>
             </div>
           </div>
 
@@ -554,6 +554,7 @@
                 Saturday: 8 AM – 4 PM<br />
                 Sunday: 8 AM – 2 PM
               </p>
+              <p class="info-status" id="openStatus" aria-live="polite">Checking hours…</p>
             </div>
           </div>
 
@@ -563,7 +564,7 @@
               <h3>Contact</h3>
               <p>
                 <a href="tel:5125550147">(512) 555-0147</a><br />
-                <a href="https://www.instagram.com/sunrisecafeatx/" target="_blank" rel="noopener">
+                <a href="https://www.instagram.com/sunrisecafeatx/" target="_blank" rel="noopener noreferrer">
                   @sunrisecafeatx
                 </a>
               </p>
@@ -603,9 +604,10 @@
         <h2>Stay in the Loop</h2>
         <p>Weekly specials, seasonal menu drops, and bakery pre-orders &mdash; straight to your inbox.</p>
         <!-- Formspree Newsletter Form -->
-        <form class="newsletter-form"
+        <form id="newsletterForm" class="newsletter-form"
               action="https://formspree.io/f/{form_id}"
-              method="POST">
+              method="POST"
+              aria-describedby="newsletterStatus">
 
           <input type="email"
                 name="email"
@@ -617,8 +619,9 @@
             Subscribe
           </button>
         </form>
+        <div id="newsletterStatus" class="newsletter-status" aria-live="polite"></div>
         <div class="newsletter-links">
-          <a href="https://sunrisecafe.square.site" class="btn btn-outline" target="_blank" rel="noopener">Order on Square Online</a>
+          <a href="https://sunrisecafe.square.site" class="btn btn-outline" target="_blank" rel="noopener noreferrer">Order on Square Online</a>
         </div>
       </div>
     </div>
@@ -635,13 +638,13 @@
           </div>
           <p>Fresh-baked pastries, locally sourced brunch, and craft coffee on South Lamar. Austin&rsquo;s favorite morning spot.</p>
           <div class="footer-social">
-            <a href="https://www.instagram.com/sunrisecafeatx/" target="_blank" rel="noopener" aria-label="Instagram" class="social-link">
+            <a href="https://www.instagram.com/sunrisecafeatx/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="social-link">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5"/></svg>
             </a>
-            <a href="https://www.yelp.com/biz/sunrisecafe-austin" target="_blank" rel="noopener" aria-label="Yelp" class="social-link">
+            <a href="https://www.yelp.com/biz/sunrisecafe-austin" target="_blank" rel="noopener noreferrer" aria-label="Yelp" class="social-link">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
             </a>
-            <a href="https://www.facebook.com/sunrisecafe" target="_blank" rel="noopener" aria-label="Facebook" class="social-link">
+            <a href="https://www.facebook.com/sunrisecafe" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="social-link">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
             </a>
             <a href="tel:5125550147" aria-label="Phone" class="social-link">
@@ -662,7 +665,7 @@
         <div class="footer-links-col">
           <h4>Order Online</h4>
           <ul>
-            <li><a href="https://sunrisecafe.square.site" target="_blank" rel="noopener">Square Online</a></li>
+            <li><a href="https://sunrisecafe.square.site" target="_blank" rel="noopener noreferrer">Square Online</a></li>
           </ul>
           <h4 style="margin-top: 1.5rem;">Contact</h4>
           <ul>

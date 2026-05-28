@@ -21,41 +21,37 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (navToggle && navLinks) {
-    navToggle.addEventListener('click', () => {
-      const isOpen = navLinks.classList.toggle('open');
-      document.body.classList.toggle('nav-open', isOpen);
-      navToggle.setAttribute('aria-expanded', isOpen);
+    const closeMobileMenu = () => {
+      navLinks.classList.remove('open');
+      navToggle.classList.remove('active');
+      document.body.classList.remove('nav-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    };
 
-      const spans = navToggle.querySelectorAll('span');
-      if (spans.length === 3) {
-        if (isOpen) {
-          spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-          spans[1].style.opacity = '0';
-          spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
-        } else {
-          spans.forEach(span => {
-            span.style.transform = '';
-            span.style.opacity = '';
-          });
-        }
-      }
-    });
+    const toggleMobileMenu = () => {
+      const isOpen = navLinks.classList.toggle('open');
+      navToggle.classList.toggle('active', isOpen);
+      document.body.classList.toggle('nav-open', isOpen);
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+    };
+
+    navToggle.addEventListener('click', toggleMobileMenu);
 
     // Close on link click
     navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-        document.body.classList.remove('nav-open');
-        navToggle.setAttribute('aria-expanded', 'false');
-      });
+      link.addEventListener('click', closeMobileMenu);
     });
 
     // Close when clicking outside
     document.addEventListener('click', (e) => {
       if (navLinks.classList.contains('open') && !navbar.contains(e.target)) {
-        navLinks.classList.remove('open');
-        document.body.classList.remove('nav-open');
-        navToggle.setAttribute('aria-expanded', 'false');
+        closeMobileMenu();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+        closeMobileMenu();
       }
     });
   }
@@ -165,26 +161,79 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ==================== NEWSLETTER ==================== */
   const newsletterForm = document.getElementById('newsletterForm');
+  const newsletterStatus = document.getElementById('newsletterStatus');
   if (newsletterForm) {
     newsletterForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const input = newsletterForm.querySelector('input[type="email"]');
       const btn = newsletterForm.querySelector('button');
       const email = input?.value.trim();
+      const action = newsletterForm.getAttribute('action') || '';
 
-      if (email) {
-        btn.textContent = 'Subscribed!';
-        btn.style.background = 'linear-gradient(135deg, #6aab73, #3d8b4f)';
-        input.value = '';
-        input.placeholder = 'Thanks! Check your inbox.';
-
-        setTimeout(() => {
-          btn.textContent = 'Subscribe';
-          btn.style.background = '';
-          input.placeholder = 'Your email address';
-        }, 3000);
+      if (!email) {
+        if (newsletterStatus) {
+          newsletterStatus.textContent = 'Please enter a valid email address.';
+          newsletterStatus.className = 'newsletter-status';
+        }
+        return;
       }
+
+      if (action.includes('{form_id}') || !action.includes('formspree.io')) {
+        if (newsletterStatus) {
+          newsletterStatus.textContent = 'Thanks! Replace {form_id} in the form action to start collecting signups.';
+          newsletterStatus.className = 'newsletter-status success';
+        }
+        input.value = '';
+        return;
+      }
+
+      if (newsletterStatus) {
+        newsletterStatus.textContent = 'Sending your signup…';
+        newsletterStatus.className = 'newsletter-status';
+      }
+
+      btn.textContent = 'Subscribed!';
+      btn.style.background = 'linear-gradient(135deg, #6aab73, #3d8b4f)';
+
+      setTimeout(() => {
+        btn.textContent = 'Subscribe';
+        btn.style.background = '';
+        input.placeholder = 'Thanks! Check your inbox.';
+        if (newsletterStatus) {
+          newsletterStatus.textContent = 'Thanks! Your email is on its way.';
+          newsletterStatus.className = 'newsletter-status success';
+        }
+      }, 1000);
+
+      newsletterForm.submit();
     });
+  }
+
+  const openStatus = document.getElementById('openStatus');
+  if (openStatus) {
+    const openingHours = {
+      0: { open: 8, close: 14 },
+      1: { open: 7, close: 15 },
+      2: { open: 7, close: 15 },
+      3: { open: 7, close: 15 },
+      4: { open: 7, close: 15 },
+      5: { open: 7, close: 16 },
+      6: { open: 8, close: 16 },
+    };
+
+    const updateOpenStatus = () => {
+      const now = new Date();
+      const today = openingHours[now.getDay()];
+      if (!today) return;
+      const currentHour = now.getHours() + now.getMinutes() / 60;
+      const isOpen = currentHour >= today.open && currentHour < today.close;
+      openStatus.textContent = isOpen ? 'Open now — stop by!' : 'Closed now — see you soon.';
+      openStatus.classList.toggle('status-open', isOpen);
+      openStatus.classList.toggle('status-closed', !isOpen);
+    };
+
+    updateOpenStatus();
+    setInterval(updateOpenStatus, 5 * 60 * 1000);
   }
 
   /* ==================== HERO PARALLAX ==================== */

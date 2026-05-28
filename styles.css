@@ -296,6 +296,10 @@ ul { list-style: none; }
   display: block;
 }
 
+body.nav-open {
+  overflow: hidden;
+}
+
 /* Hamburger to X animation */
 .nav-toggle.active span:nth-child(1) {
   transform: rotate(45deg) translate(5px, 5px);
@@ -1024,6 +1028,18 @@ ul { list-style: none; }
   line-height: 1.6;
 }
 
+.info-status {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.info-status.status-closed {
+  color: var(--color-text-muted);
+}
+
 .info-card a {
   color: var(--color-primary);
 }
@@ -1103,6 +1119,18 @@ ul { list-style: none; }
 }
 
 .newsletter-form input::placeholder { color: var(--color-text-muted); }
+
+.newsletter-status {
+  margin: 0 auto 1rem;
+  max-width: 480px;
+  font-size: 0.95rem;
+  color: var(--color-secondary);
+  min-height: 1.4rem;
+}
+
+.newsletter-status.success {
+  color: var(--color-primary);
+}
 
 .newsletter-form input:focus {
   border-color: var(--color-primary);
