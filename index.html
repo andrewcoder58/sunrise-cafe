@@ -130,6 +130,10 @@
         <li><a href="#hours-location">Visit</a></li>
       </ul>
       <a href="#menu" class="nav-cta">Order Online</a>
+      <button class="cart-button" id="cartButton" aria-label="Open cart" aria-haspopup="dialog" aria-controls="cartSidebar" aria-expanded="false">
+        <span class="cart-icon">🛒</span>
+        <span class="cart-count" id="cartCount" aria-live="polite" aria-atomic="true">0</span>
+      </button>
       <button type="button" class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-controls="navLinks" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -621,6 +625,53 @@
 
   <!-- ===================== FOOTER ===================== -->
   </main>
+  <!-- CART SIDEBAR -->
+  <aside class="cart-sidebar" id="cartSidebar" role="dialog" aria-hidden="true" aria-labelledby="cartTitle">
+    <div class="cart-panel">
+      <header class="cart-header">
+        <h2 id="cartTitle">Your Order</h2>
+        <button class="cart-close" id="cartClose" aria-label="Close cart">✕</button>
+      </header>
+      <div class="cart-body" id="cartBody">
+        <div class="cart-empty">Your cart is empty.</div>
+        <ul class="cart-items" id="cartItems"></ul>
+      </div>
+      <footer class="cart-footer">
+        <div class="cart-totals">
+          <div class="cart-subtotal">Subtotal: <span id="cartSubtotal" aria-live="polite" aria-atomic="true">$0.00</span></div>
+          <div id="cartLive" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+          <div class="cart-actions">
+            <button class="btn btn-outline" id="clearCart">Clear</button>
+            <button class="btn btn-primary" id="checkoutBtn">Checkout</button>
+          </div>
+        </div>
+        <form id="checkoutForm" class="checkout-form" style="display:none;">
+          <label>
+            Name<br>
+            <input type="text" id="customerName" required placeholder="Full name">
+          </label>
+          <label>
+            Email<br>
+            <input type="email" id="customerEmail" required placeholder="you@example.com">
+          </label>
+          <label>
+            Order type
+            <select id="orderType">
+              <option value="pickup">Pickup</option>
+              <option value="delivery">Delivery</option>
+            </select>
+          </label>
+          <label>
+            Notes<br>
+            <textarea id="orderNotes" rows="3" placeholder="Allergies or special requests (optional)"></textarea>
+          </label>
+          <div class="checkout-actions">
+            <button type="submit" class="btn btn-primary">Place Order</button>
+          </div>
+        </form>
+      </footer>
+    </div>
+  </aside>
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">

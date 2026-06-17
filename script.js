@@ -350,4 +350,331 @@ document.addEventListener('DOMContentLoaded', () => {
 
     createDots();
   }
+
+  /* ==================== CART MODULE ==================== */
+  const cartButton = document.getElementById('cartButton');
+  const cartSidebar = document.getElementById('cartSidebar');
+  const cartClose = document.getElementById('cartClose');
+  const cartCount = document.getElementById('cartCount');
+  const cartItemsList = document.getElementById('cartItems');
+  const cartSubtotalEl = document.getElementById('cartSubtotal');
+  const clearCartBtn = document.getElementById('clearCart');
+  const checkoutBtn = document.getElementById('checkoutBtn');
+  const checkoutForm = document.getElementById('checkoutForm');
+
+  let cart = JSON.parse(localStorage.getItem('sunrise_cart') || '[]');
+  let orderPlaced = false;
+
+  function saveCart() {
+    localStorage.setItem('sunrise_cart', JSON.stringify(cart));
+    updateCartUI();
+  }
+
+  // Render per-card controls (Add button or qty/remove controls) between price and tag
+  function renderCardControls() {
+    menuItems.forEach((card, i) => {
+      const title = card.querySelector('h3')?.textContent?.trim() || `Item ${i + 1}`;
+      const priceEl = card.querySelector('.menu-price');
+      const tagEl = card.querySelector('.menu-tag');
+      let controls = card.querySelector('.card-controls');
+      if (!controls) {
+        controls = document.createElement('div');
+        controls.className = 'card-controls';
+      }
+
+      const existing = cart.find(it => it.title === title);
+      // build inner html for controls
+      if (existing) {
+        controls.innerHTML = `
+          <div class="card-qty">
+            <button class="card-decrease" aria-label="Decrease">−</button>
+            <span class="card-qty-label">${existing.qty}</span>
+            <button class="card-increase" aria-label="Increase">+</button>
+            <button class="card-remove btn btn-outline">Remove</button>
+          </div>
+        `;
+      } else {
+        controls.innerHTML = `<button class="btn add-to-cart">Add to cart</button>`;
+      }
+
+      // insert controls between price and tag (or append to footer)
+      const footer = card.querySelector('.menu-card-footer') || card;
+      if (tagEl) {
+        if (!footer.contains(controls)) footer.insertBefore(controls, tagEl);
+      } else {
+        if (!footer.contains(controls)) footer.appendChild(controls);
+      }
+
+      // wire control listeners (stopPropagation to avoid accidental close)
+      const addBtn = controls.querySelector('.add-to-cart');
+      addBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        // micro animation on the clicked button
+        addBtn.classList.add('pulse');
+        setTimeout(() => addBtn.classList.remove('pulse'), 350);
+        addItem(title, parseFloat(priceEl?.textContent.replace(/[^0-9.]/g, '') || '0'));
+      });
+
+      const inc = controls.querySelector('.card-increase');
+      inc?.addEventListener('click', (e) => { e.stopPropagation(); const it = cart.find(it => it.title === title); if (it) { it.qty++; saveCart(); } });
+      const dec = controls.querySelector('.card-decrease');
+      dec?.addEventListener('click', (e) => { e.stopPropagation(); const idx = cart.findIndex(it => it.title === title); if (idx > -1) { if (cart[idx].qty > 1) cart[idx].qty--; else cart.splice(idx,1); saveCart(); } });
+      const rem = controls.querySelector('.card-remove');
+      rem?.addEventListener('click', (e) => { e.stopPropagation(); const idx = cart.findIndex(it => it.title === title); if (idx > -1) { cart.splice(idx,1); saveCart(); } });
+    });
+  }
+
+  function formatCurrency(n) { return '$' + Number(n || 0).toFixed(2); }
+
+  function getSubtotal() { return cart.reduce((s, i) => s + (i.price * i.qty), 0); }
+
+  function updateCartUI() {
+    if (!cartCount) return;
+    const totalItems = cart.reduce((s, i) => s + i.qty, 0);
+    cartCount.textContent = totalItems;
+
+    if (cartItemsList) {
+      cartItemsList.innerHTML = '';
+      if (cart.length === 0) {
+        cartItemsList.style.display = 'none';
+        const empty = document.querySelector('#cartBody .cart-empty');
+        if (empty) empty.style.display = '';
+      } else {
+        cartItemsList.style.display = '';
+        const empty = document.querySelector('#cartBody .cart-empty');
+        if (empty) empty.style.display = 'none';
+
+        cart.forEach((it, idx) => {
+          const li = document.createElement('li');
+          li.className = 'cart-item';
+          li.dataset.index = idx;
+
+          li.innerHTML = `
+            <div class="cart-item-info">
+              <div class="cart-item-title">${it.title}</div>
+              <div class="cart-item-meta">${formatCurrency(it.price)}</div>
+            </div>
+            <div class="qty-controls">
+              <button class="qty-decrease" aria-label="Decrease">−</button>
+              <span class="qty">${it.qty}</span>
+              <button class="qty-increase" aria-label="Increase">+</button>
+            </div>
+            <div style="margin-left:8px;">
+              <button class="btn btn-outline remove-item" aria-label="Remove">Remove</button>
+            </div>
+          `;
+
+          cartItemsList.appendChild(li);
+        });
+      }
+    }
+
+    if (cartSubtotalEl) cartSubtotalEl.textContent = formatCurrency(getSubtotal());
+    // announce cart changes for assistive tech
+    const cartLive = document.getElementById('cartLive');
+    if (cartLive) {
+      cartLive.textContent = `${totalItems} item${totalItems !== 1 ? 's' : ''} — ${formatCurrency(getSubtotal())}`;
+    }
+
+    // wire up qty and remove listeners (stopPropagation to avoid closing)
+    cartItemsList?.querySelectorAll('.qty-increase').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const li = btn.closest('.cart-item');
+        const idx = Number(li.dataset.index);
+        cart[idx].qty++;
+        saveCart();
+      });
+    });
+
+    cartItemsList?.querySelectorAll('.qty-decrease').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const li = btn.closest('.cart-item');
+        const idx = Number(li.dataset.index);
+        if (cart[idx].qty > 1) cart[idx].qty--; else cart.splice(idx, 1);
+        saveCart();
+      });
+    });
+
+    cartItemsList?.querySelectorAll('.remove-item').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const li = btn.closest('.cart-item');
+        const idx = Number(li.dataset.index);
+        cart.splice(idx, 1);
+        saveCart();
+      });
+    });
+
+    // update card-level controls to reflect cart state
+    renderCardControls();
+  }
+
+  function addItem(title, price) {
+    const existing = cart.find(i => i.title === title);
+    if (existing) existing.qty += 1; else cart.push({ title, price: Number(price) || 0, qty: 1 });
+    saveCart();
+    if (cartButton) {
+      cartButton.classList.add('bump');
+      setTimeout(() => cartButton.classList.remove('bump'), 300);
+    }
+  }
+
+  // focus trap helpers
+  const focusableSelectors = 'a[href], area[href], input:not([disabled]), button:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  let previousActiveElement = null;
+  function handleCartKeydown(e) {
+    if (e.key !== 'Tab') return;
+    const focusable = Array.from(cartSidebar.querySelectorAll(focusableSelectors)).filter(el => el.offsetParent !== null);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault(); last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault(); first.focus();
+    }
+  }
+
+  function openCart() {
+    if (!cartSidebar) return;
+    cartSidebar.setAttribute('aria-hidden', 'false');
+    cartButton?.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('cart-open');
+    // hide checkout form initially
+    if (checkoutForm) checkoutForm.style.display = 'none';
+    // focus trap: save active element and move focus into cart
+    previousActiveElement = document.activeElement;
+    setTimeout(() => {
+      const focusable = cartSidebar.querySelectorAll(focusableSelectors);
+      if (focusable.length) focusable[0].focus();
+    }, 50);
+    document.addEventListener('keydown', handleCartKeydown);
+  }
+
+  function closeCart() {
+    if (!cartSidebar) return;
+    cartSidebar.setAttribute('aria-hidden', 'true');
+    cartButton?.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('cart-open');
+    if (checkoutForm) checkoutForm.style.display = 'none';
+    // remove focus trap and restore focus
+    document.removeEventListener('keydown', handleCartKeydown);
+    if (previousActiveElement && previousActiveElement.focus) previousActiveElement.focus();
+  }
+
+  cartButton?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const hidden = cartSidebar?.getAttribute('aria-hidden') === 'true';
+    if (hidden) { updateCartUI(); openCart(); } else { closeCart(); }
+  });
+
+  cartClose?.addEventListener('click', closeCart);
+  clearCartBtn?.addEventListener('click', () => { cart = []; saveCart(); });
+  checkoutBtn?.addEventListener('click', () => {
+    if (orderPlaced || cart.length === 0) return;
+    if (checkoutForm) checkoutForm.style.display = 'block';
+    checkoutForm?.querySelector('input,select,textarea')?.focus();
+  });
+
+  document.addEventListener('click', (e) => {
+    if (cartSidebar && cartSidebar.getAttribute('aria-hidden') === 'false' && !cartSidebar.contains(e.target) && e.target !== cartButton) {
+      closeCart();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && cartSidebar && cartSidebar.getAttribute('aria-hidden') === 'false') closeCart();
+  });
+
+  // Initial render of card controls
+  if (menuItems && menuItems.length) {
+    renderCardControls();
+  }
+
+  // initialize cart UI on load
+  saveCart();
+
+  // Checkout submit (mock)
+  checkoutForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('customerName')?.value.trim();
+    const emailInput = document.getElementById('customerEmail');
+    const email = emailInput?.value.trim();
+    const type = document.getElementById('orderType')?.value;
+    const notes = document.getElementById('orderNotes')?.value.trim();
+    // basic email validation
+    const emailValid = email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!name) { alert('Please provide your name to place the order.'); return; }
+    if (!emailValid) { alert('Please provide a valid email address.'); emailInput?.focus(); return; }
+    if (orderPlaced || cart.length === 0) return;
+    orderPlaced = true;
+
+    const orderNumber = 'S' + Date.now().toString().slice(-6);
+    const subtotal = getSubtotal();
+    const summary = cart.map(i => `${i.qty}x ${i.title} (${formatCurrency(i.price)})`).join('\n');
+    const cartBody = document.getElementById('cartBody');
+    if (cartBody) {
+      // lock checkout after successful order
+      if (checkoutBtn) {
+        checkoutBtn.disabled = true;
+        checkoutBtn.style.display = 'none';
+      }
+
+      // hide totals / actions
+      const cartTotals = document.querySelector('.cart-footer .cart-totals');
+      if (cartTotals) cartTotals.style.display = 'none';
+
+      // remove the "Your cart is empty." element from DOM while showing confirmation
+      const emptyEl = cartBody.querySelector('.cart-empty');
+      if (emptyEl) emptyEl.remove();
+
+      const confirm = document.createElement('div');
+      confirm.className = 'order-confirm';
+      confirm.innerHTML = `<h3>Thanks, ${name}!</h3><p>Your order <strong>#${orderNumber}</strong> has been placed on Square Online.</p><pre style="white-space:pre-wrap;">${summary}</pre><p><strong>Total:</strong> ${formatCurrency(subtotal)}</p>`;
+
+      // place 'Start another order' button in the cart footer (more visible)
+      const cartFooter = document.querySelector('.cart-footer');
+      const startBtn = document.createElement('button');
+      startBtn.className = 'btn btn-outline';
+      startBtn.id = 'startAnotherBtn';
+      startBtn.textContent = 'Start another order';
+      startBtn.addEventListener('click', () => {
+        // remove confirmation and restore totals
+        confirm.remove();
+        if (cartTotals) cartTotals.style.display = '';
+        // restore the empty element so updateCartUI has something to toggle
+        if (!cartBody.querySelector('.cart-empty')) {
+          const newEmpty = document.createElement('div');
+          newEmpty.className = 'cart-empty';
+          newEmpty.textContent = 'Your cart is empty.';
+          cartBody.insertBefore(newEmpty, cartItemsList);
+        }
+        // reset ordering state
+        orderPlaced = false;
+
+        if (checkoutBtn) {
+          checkoutBtn.disabled = false;
+          checkoutBtn.style.display = '';
+        }
+
+        if (checkoutForm) {
+          checkoutForm.reset();
+          checkoutForm.style.display = 'none';
+        }
+
+        // remove start button from footer
+        startBtn.remove();
+        cart = [];
+        saveCart();
+      });
+
+      // append confirm to body and button to footer
+      cartBody.appendChild(confirm);
+      if (cartFooter) cartFooter.appendChild(startBtn);
+    }
+    cart = [];
+    saveCart();
+  });
 });

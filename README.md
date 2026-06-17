@@ -16,6 +16,7 @@ A fully responsive and SEO-optimized restaurant website built with HTML, CSS, an
 
 - Fully responsive design (mobile, tablet, desktop)
 - Dynamic menu filtering system
+- Interactive shopping cart with add/remove items, client-side storage, and mock checkout
 - Smooth animations and transitions
 - Testimonial slider
 - Embedded Google Maps integration
