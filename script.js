@@ -13,11 +13,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const navLinks = document.getElementById('navLinks');
 
   if (navbar) {
-    const handleScroll = () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+    const sentinel = document.getElementById('topOfPage');
+
+    if ('IntersectionObserver' in window && sentinel) {
+      const navbarObserver = new IntersectionObserver(([entry]) => {
+        navbar.classList.toggle('scrolled', !entry.isIntersecting);
+      }, {
+        root: null,
+        rootMargin: '0px 0px 0px 0px',
+        threshold: 0,
+      });
+
+      navbarObserver.observe(sentinel);
+    } else {
+      const handleScroll = () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 50);
+      };
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      handleScroll();
+    }
   }
 
   if (navToggle && navLinks) {
@@ -74,29 +88,61 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ==================== ACTIVE NAV LINK ==================== */
-  const sections = document.querySelectorAll('section[id]');
-  const navAnchors = document.querySelectorAll('.nav-links a');
+  const sections = Array.from(document.querySelectorAll('section[id]'));
+  const navAnchors = Array.from(document.querySelectorAll('.nav-links a'));
 
   if (sections.length && navAnchors.length) {
-    const highlightNav = () => {
-      let current = '';
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop - 120;
-        if (window.scrollY >= sectionTop) {
-          current = section.getAttribute('id');
-        }
-      });
+    const setActiveLink = (activeId = '') => {
+      navAnchors.forEach(anchor => {
+        const isActive = anchor.getAttribute('href') === `#${activeId}`;
+        anchor.classList.toggle('active', isActive);
 
-      navAnchors.forEach(a => {
-        a.classList.toggle(
-          'active',
-          a.getAttribute('href') === `#${current}`
-        );
+        if (isActive) {
+          anchor.setAttribute('aria-current', 'page');
+        } else {
+          anchor.removeAttribute('aria-current');
+        }
       });
     };
 
-    window.addEventListener('scroll', highlightNav, { passive: true });
-    highlightNav();
+    setActiveLink('');
+
+    if ('IntersectionObserver' in window) {
+      const sectionObserver = new IntersectionObserver((entries) => {
+        const visibleEntry = entries
+          .filter(entry => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (visibleEntry) {
+          const sectionId = visibleEntry.target.id;
+          const hasMatchingNavLink = navAnchors.some(anchor => anchor.getAttribute('href') === `#${sectionId}`);
+
+          if (hasMatchingNavLink) {
+            setActiveLink(sectionId);
+          }
+        }
+      }, {
+        rootMargin: '-25% 0px -35% 0px',
+        threshold: [0.1, 0.25, 0.5],
+      });
+
+      sections.forEach(section => sectionObserver.observe(section));
+    } else {
+      const highlightNav = () => {
+        let current = '';
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop - 120;
+          if (window.scrollY >= sectionTop) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        setActiveLink(current);
+      };
+
+      window.addEventListener('scroll', highlightNav, { passive: true });
+      highlightNav();
+    }
   }
 
   /* ==================== SCROLL ANIMATIONS ==================== */
