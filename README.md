@@ -1,31 +1,31 @@
-# 🌅 Sunrise Cafe
+# &#9728;&#65039; Sunrise Cafe
 
 A fully responsive and SEO-optimized restaurant website built with HTML, CSS, and JavaScript. It features a modern UI with smooth animations, interactive elements, and a clean user experience.
 
-![Sunrise Cafe Hero](https://github.com/user-attachments/assets/22a5274f-24f2-483a-bab3-3380a5a456bb)
+![Sunrise Cafe Hero](https://github.com/user-attachments/assets/dd0aecc3-398b-4ec2-8310-474bbc72a377)
 <br>
-![Sunrise Cafe About](https://github.com/user-attachments/assets/d0d5bc2d-2b1a-4a51-95f8-7c9c016f4c5c)
+![Sunrise Cafe About](https://github.com/user-attachments/assets/4ab88aaa-9a70-4aa8-ad2a-d34bd8018227)
 <br>
-![Sunrise Cafe Visit Us](https://github.com/user-attachments/assets/a27a47d0-035e-49fb-a9be-50295571f708)
+![Sunrise Cafe Visit Us](https://github.com/user-attachments/assets/31fb10f8-6ccc-4e08-9032-a491b3cbceae)
 
-## 🚀 Live Site
+## Live Site
 
 👉 https://sunrisecafeatx.netlify.app/
 
-## ✨ Features
+## Features
 
-- Fully responsive design (mobile, tablet, desktop)
+- Clean and user-friendly interface
+- Fully responsive design (mobile, tablet, and desktop)
 - Dynamic menu filtering system
 - Interactive shopping cart with add/remove items, client-side storage, and mock checkout
-- Smooth animations and transitions
 - Testimonial slider
 - Embedded Google Maps integration
+- Smooth animations and transitions
 - Optimized for performance and SEO with CSS preload and faster font delivery
-- WebP image delivery and explicit image dimensions for faster loading
-- Accessibility improvements like skip link and landmark structure
-- Clean and user-friendly interface
+- Compressed images for faster loading
+- Accessibility improvements, including a skip link and semantic landmark structure
 
-## 📦 Installation
+## Installation
 
 1. Clone the repository:
 ```bash
@@ -41,7 +41,7 @@ cd sunrise-cafe
 - Double-click `index.html`, or  
 - Use a live server (recommended)
 
-## 📁 Project Structure
+## Project Structure
 
 ```bash
 sunrise-cafe/
@@ -58,7 +58,7 @@ sunrise-cafe/
 │── favicon/
 ```
 
-## ⚙️ Customization
+## Customization
 
 You can easily customize the project:
 
@@ -68,7 +68,7 @@ You can easily customize the project:
 - Replace images in the `assets/` folders
 - Update favicon in the `favicon/` directory
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome!
 
