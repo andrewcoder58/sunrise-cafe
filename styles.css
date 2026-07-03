@@ -6,7 +6,7 @@
 /* ---------- CSS Custom Properties ---------- */
 :root {
   /* Brand Colors */
-  --color-primary: #E8913A;
+  --color-primary: #A65600;
   --color-primary-dark: #D07A2F;
   --color-secondary: #2C3E50;
   --color-accent: #F4D03F;
@@ -1279,7 +1279,7 @@ body.nav-open {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 1.5rem;
   text-align: center;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.7);
   font-size: 0.8rem;
 }
 

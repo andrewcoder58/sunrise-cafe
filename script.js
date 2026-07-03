@@ -478,6 +478,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!cartCount) return;
     const totalItems = cart.reduce((s, i) => s + i.qty, 0);
     cartCount.textContent = totalItems;
+    cartButton?.setAttribute('aria-label', `Cart, ${totalItems} items`);
 
     if (cartItemsList) {
       cartItemsList.innerHTML = '';
