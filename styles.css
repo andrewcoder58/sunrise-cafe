@@ -375,7 +375,7 @@ body.nav-open {
   inset: 0;
   background:
     linear-gradient(rgba(255, 248, 240, 0.85), rgba(245, 230, 208, 0.9)),
-    url("assets/hero/brunch-spread.jpg");
+    url("assets/hero/brunch-spread.webp");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
